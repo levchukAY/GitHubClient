@@ -1,4 +1,4 @@
-package com.artioml.githubclient.view;
+package com.artioml.githubclient;
 
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;

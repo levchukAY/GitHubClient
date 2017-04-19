@@ -1,4 +1,4 @@
-package com.artioml.githubclient.view;
+package com.artioml.githubclient;
 
 import android.content.Intent;
 import android.graphics.Bitmap;

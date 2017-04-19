@@ -1,4 +1,4 @@
-package com.artioml.githubclient.view;
+package com.artioml.githubclient;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,6 +11,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.artioml.githubclient.EditUserActivity;
+import com.artioml.githubclient.ReposListActivity;
 import com.artioml.githubclient.api.Credentials;
 import com.artioml.githubclient.api.GitHubClient;
 import com.artioml.githubclient.api.ServiceGenerator;

@@ -1,4 +1,4 @@
-package com.artioml.githubclient.view;
+package com.artioml.githubclient;
 
 import android.app.Activity;
 import android.content.Intent;

@@ -1,4 +1,4 @@
-package com.artioml.githubclient.view;
+package com.artioml.githubclient;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,11 +12,19 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.artioml.githubclient.api.Credentials;
+import com.artioml.githubclient.api.GitHubClient;
+import com.artioml.githubclient.api.ServiceGenerator;
+import com.artioml.githubclient.entities.AuthorizedUser;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -31,6 +39,22 @@ public class MainActivity extends AppCompatActivity {
             startActivity(loginIntent);
             //finish();
         }
+
+        /*GitHubClient mClient = ServiceGenerator.createService(GitHubClient.class);
+        mClient.followUser("artiomlevchuk", new Credentials(this).getToken())
+        .enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful())
+                    Toast.makeText(MainActivity.this, "Successful", Toast.LENGTH_SHORT).show();
+                else Toast.makeText(MainActivity.this, "no Successful", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Toast.makeText(MainActivity.this, "onFailed", Toast.LENGTH_SHORT).show();
+            }
+        });*/
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
