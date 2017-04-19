@@ -1,2 +1,2 @@
 # GitHub Client
-## Client using GitHub API + Getrofit 2
+Client using GitHub API + Getrofit 2
