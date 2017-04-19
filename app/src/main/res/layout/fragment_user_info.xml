@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_margin="@dimen/activity_vertical_margin">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/avatar_height"
+            app:srcCompat="@drawable/ic_github_logo"
+            android:id="@+id/image_user_avatar"
+            android:layout_marginTop="@dimen/half_margin"
+            android:layout_marginBottom="@dimen/half_margin" />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:layout_gravity="center">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/text_user_login"
+                android:textSize="24sp"
+                android:gravity="center"
+                android:layout_marginTop="@dimen/half_margin"
+                android:layout_marginBottom="@dimen/half_margin"
+                android:layout_weight="1" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/ic_edit"
+                android:id="@+id/button_edit"
+                android:layout_weight="1"
+                android:layout_marginStart="@dimen/half_margin"
+                android:layout_marginLeft="@dimen/half_margin"
+                android:visibility="gone" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/ic_refresh"
+                android:id="@+id/button_refresh"
+                android:layout_weight="1"
+                android:visibility="gone" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <GridLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/half_margin"
+                android:layout_marginTop="@dimen/half_margin"
+                android:layout_weight="2">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/text_repos"
+                    android:layout_row="0"
+                    android:layout_column="0"
+                    android:gravity="center"
+                    android:textSize="18sp"
+                    android:textColor="@android:color/black"
+                    android:layout_gravity="fill_horizontal"
+                    android:layout_columnSpan="1"
+                    android:layout_columnWeight="1" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/text_gists"
+                    android:layout_row="0"
+                    android:layout_column="1"
+                    android:gravity="center"
+                    android:textSize="18sp"
+                    android:textColor="@android:color/black"
+                    android:layout_gravity="fill_horizontal"
+                    android:layout_columnSpan="1"
+                    android:layout_columnWeight="1" />
+
+                <TextView
+                    android:text="@string/title_public_repos"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_row="1"
+                    android:layout_column="0"
+                    android:gravity="center"
+                    android:layout_gravity="fill_horizontal"
+                    android:layout_columnSpan="1"
+                    android:layout_columnWeight="1" />
+
+                <TextView
+                    android:text="@string/title_public_gists"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_row="1"
+                    android:layout_column="1"
+                    android:gravity="center"
+                    android:layout_gravity="fill_horizontal"
+                    android:layout_columnSpan="1"
+                    android:layout_columnWeight="1" />
+
+            </GridLayout>
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:background="?android:attr/selectableItemBackground"
+                app:srcCompat="@drawable/ic_arrow"
+                android:id="@+id/button_repos"
+                android:layout_columnWeight="1"
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                android:padding="@dimen/normal_margin" />
+
+        </LinearLayout>
+
+        <GridLayout
+            android:id="@+id/panel_private"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:columnCount="4"
+            android:layout_marginTop="@dimen/half_margin"
+            android:layout_marginBottom="@dimen/half_margin">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_row="1"
+                android:layout_column="2"
+                android:layout_columnWeight="1"
+                android:gravity="center"
+                android:text="@string/title_owned_private_repos"
+                android:layout_gravity="fill_horizontal" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/text_owned_repos"
+                android:layout_row="0"
+                android:layout_column="2"
+                android:layout_columnWeight="1"
+                android:textSize="18sp"
+                android:textColor="@android:color/black"
+                android:gravity="center"
+                android:layout_gravity="fill_horizontal" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/text_privte_gists"
+                android:layout_row="0"
+                android:layout_columnWeight="1"
+                android:layout_column="0"
+                android:textSize="18sp"
+                android:textColor="@android:color/black"
+                android:gravity="center"
+                android:layout_gravity="fill_horizontal" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/text_total_repos"
+                android:layout_row="0"
+                android:layout_columnWeight="1"
+                android:layout_column="1"
+                android:textSize="18sp"
+                android:textColor="@android:color/black"
+                android:gravity="center"
+                android:layout_gravity="fill_horizontal" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_row="1"
+                android:layout_columnWeight="1"
+                android:layout_column="0"
+                android:gravity="center"
+                android:text="@string/title_private_gists"
+                android:layout_gravity="fill_horizontal" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_row="1"
+                android:layout_columnWeight="1"
+                android:layout_column="1"
+                android:gravity="center"
+                android:text="@string/title_total_private_repos"
+                android:layout_gravity="fill_horizontal" />
+        </GridLayout>
+
+        <GridLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:columnCount="2"
+            android:useDefaultMargins="true"
+            android:layout_marginTop="@dimen/half_margin">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="0"
+                style="@style/ContactLabelTextView"
+                android:text="@string/title_name" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/text_user_name"
+                android:layout_column="1"
+                style="@style/ContactTextView" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/ContactLabelTextView"
+                android:layout_column="0"
+                android:text="@string/title_company" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/text_user_company"
+                android:layout_column="1"
+                style="@style/ContactTextView" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/ContactLabelTextView"
+                android:layout_column="0"
+                android:text="@string/title_email" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/text_user_email"
+                android:layout_column="1"
+                style="@style/ContactTextView" />
+        </GridLayout>
+
+    </LinearLayout>
+
+</ScrollView>
