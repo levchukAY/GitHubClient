@@ -1,12 +1,13 @@
 package com.artioml.githubclient;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 
-public class FireDialogFragment extends DialogFragment {
+public class NoConnectionDialogFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         // Use the Builder class for convenient dialog construction
@@ -14,7 +15,12 @@ public class FireDialogFragment extends DialogFragment {
         builder.setMessage(R.string.msg_no_connection_dialog)
                 .setPositiveButton(R.string.button_ok, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        ((LogInOutActivity) getActivity()).startLogin();
+                        Activity activity = getActivity();
+                        /*if (activity instanceof LogInOutActivity)
+                            ((LogInOutActivity) activity).startLogin();
+                        else if (activity instanceof MainActivity)
+                            ((MainActivity) activity).reloadUser();
+                        else ((UserInfoActivity) activity).reloadUser();*/
                     }
                 })
                 .setNegativeButton(R.string.button_cancel, new DialogInterface.OnClickListener() {

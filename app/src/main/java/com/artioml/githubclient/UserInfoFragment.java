@@ -1,6 +1,5 @@
 package com.artioml.githubclient;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -17,8 +16,6 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.artioml.githubclient.EditUserActivity;
-import com.artioml.githubclient.ReposListActivity;
 import com.artioml.githubclient.api.Credentials;
 import com.artioml.githubclient.api.GitHubClient;
 import com.artioml.githubclient.api.ServiceGenerator;
@@ -33,7 +30,6 @@ import retrofit2.Response;
 public class UserInfoFragment extends Fragment {
 
     private ImageView mAvatarImageView;
-    //private ImageView mRefreshImageView;
     private TextView mLoginTextView;
     private TextView mNameTextView;
     private TextView mCompanyTextView;
@@ -45,6 +41,7 @@ public class UserInfoFragment extends Fragment {
     private TextView mOwnedReposTextView;
     private ProgressBar mProgressBar;
     private ScrollView mScrollView;
+    private View mPrivatePanel;
 
     private GitHubClient mClient;
     private User mUser;
@@ -69,24 +66,21 @@ public class UserInfoFragment extends Fragment {
         mOwnedReposTextView = (TextView) view.findViewById(R.id.text_owned_repos);
         mProgressBar = (ProgressBar) view.findViewById(R.id.progress_bar_user);
         mScrollView = (ScrollView) view.findViewById((R.id.view_scroll));
+        mPrivatePanel = view.findViewById(R.id.panel_private);
 
         view.findViewById(R.id.button_repos).setOnClickListener(onReposClickListener);
-        /*mRefreshImageView = (ImageView) view.findViewById(R.id.button_refresh);
-        mRefreshImageView.setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.button_repeat).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mRefreshImageView.setVisibility(View.GONE);
-                if (getArguments() == null) showAuthorizedUser();
-                else showUserByLogin(getArguments().getString("ARGUMENT_LOGIN"));
+                mProgressBar.setVisibility(View.VISIBLE);
+                showUser();
             }
-        });*/
+        });
+
+        mScrollView.setVisibility(View.GONE);
 
         mClient = ServiceGenerator.createService(GitHubClient.class);
-        if (getArguments() == null) showAuthorizedUser();
-        else {
-            view.findViewById(R.id.panel_private).setVisibility(View.GONE);
-            showUserByLogin(getArguments().getString("ARGUMENT_LOGIN"));
-        }
+        showUser();
 
         return view;
     }
@@ -94,7 +88,9 @@ public class UserInfoFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        if (getArguments() == null) inflater.inflate(R.menu.menu_edit_fragment, menu);
+        if (getArguments() == null && mUser != null) {
+            inflater.inflate(R.menu.menu_edit_fragment, menu);
+        }
     }
 
     @Override
@@ -114,6 +110,14 @@ public class UserInfoFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
+    private void showUser() {
+        if (getArguments() == null) {
+            showAuthorizedUser();
+        } else {
+            showUserByLogin(getArguments().getString("ARGUMENT_LOGIN"));
+        }
+    }
+
     private void showAuthorizedUser() {
         String token = new Credentials(getActivity()).getToken();
         mClient.getAuthorizedUser(token).enqueue(new Callback<AuthorizedUser>() {
@@ -128,22 +132,14 @@ public class UserInfoFragment extends Fragment {
                     mPrivateGistsTextView.setText(user.getPrivateGists() + "");
                     mTotalReposTextView.setText(user.getTotalPrivateRepos() + "");
                     mOwnedReposTextView.setText(user.getOwnedPrivateRepos() + "");
-
-                    //mRefreshImageView.setVisibility(View.GONE);
-
                 } else {
                     startActivity(new Intent(getActivity(), LogInOutActivity.class));
-                    /*Toast.makeText(getActivity(),
-                            getString(R.string.msg_try_later), Toast.LENGTH_SHORT).show();*/
-                    //mRefreshImageView.setVisibility(View.VISIBLE);
                 }
             }
 
             @Override
             public void onFailure(Call<AuthorizedUser> call, Throwable t) {
-                Toast.makeText(getActivity(),
-                        getString(R.string.msg_no_connection), Toast.LENGTH_SHORT).show();
-                //mRefreshImageView.setVisibility(View.VISIBLE);
+                mProgressBar.setVisibility(View.GONE);
             }
         });
     }
@@ -156,26 +152,23 @@ public class UserInfoFragment extends Fragment {
                 if (response.isSuccessful()) {
                     mUser = response.body();
                     showUserInfo(mUser);
-                    //mRefreshImageView.setVisibility(View.GONE);
+
+                    mPrivatePanel.setVisibility(View.GONE);
                 } else {
                     Toast.makeText(getActivity(),
                             getString(R.string.msg_try_later), Toast.LENGTH_SHORT).show();
-                    // mRefreshImageView.setVisibility(View.VISIBLE);
                 }
             }
 
             @Override
             public void onFailure(Call<User> call, Throwable t) {
-                Toast.makeText(getActivity(),
-                        getString(R.string.msg_no_connection), Toast.LENGTH_SHORT).show();
-                //mRefreshImageView.setVisibility(View.VISIBLE);
+                mProgressBar.setVisibility(View.GONE);
             }
         });
     }
 
     private void showUserInfo(User user) {
 
-        mProgressBar.setIndeterminate(true);
         mProgressBar.setVisibility(View.GONE);
         mScrollView.setVisibility(View.VISIBLE);
 

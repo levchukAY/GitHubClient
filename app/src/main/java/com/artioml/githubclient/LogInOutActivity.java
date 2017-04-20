@@ -66,7 +66,7 @@ public class LogInOutActivity extends AppCompatActivity {
 
         /*ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         if (cm.getActiveNetworkInfo() == null)
-            new FireDialogFragment().show(LogInOutActivity.this.getSupportFragmentManager(), "gvh");*/
+            new NoConnectionDialogFragment().show(LogInOutActivity.this.getSupportFragmentManager(), "gvh");*/
 
         mVebView.loadUrl(Uri.parse(
                 GIT_HUB_URL + OAUTH_URL
@@ -140,7 +140,7 @@ public class LogInOutActivity extends AppCompatActivity {
         /*public void onReceivedError(WebView view,
                                     WebResourceRequest request, WebResourceError error) {
             super.onReceivedError(view, request, error);
-            new FireDialogFragment().show(LogInOutActivity.this.getSupportFragmentManager(), "gvh");
+            new NoConnectionDialogFragment().show(LogInOutActivity.this.getSupportFragmentManager(), "gvh");
         }
 
         public boolean shouldOverrideUrlLoading(WebView paramWebView,  WebResourceRequest request) {
