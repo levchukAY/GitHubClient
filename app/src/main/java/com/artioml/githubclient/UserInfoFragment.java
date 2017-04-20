@@ -1,10 +1,14 @@
 package com.artioml.githubclient;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -27,8 +31,7 @@ import retrofit2.Response;
 public class UserInfoFragment extends Fragment {
 
     private ImageView mAvatarImageView;
-    private ImageView mEditImageView;
-    private ImageView mRefreshImageView;
+    //private ImageView mRefreshImageView;
     private TextView mLoginTextView;
     private TextView mNameTextView;
     private TextView mCompanyTextView;
@@ -62,8 +65,7 @@ public class UserInfoFragment extends Fragment {
         mOwnedReposTextView = (TextView) view.findViewById(R.id.text_owned_repos);
 
         view.findViewById(R.id.button_repos).setOnClickListener(onReposClickListener);
-        mEditImageView = (ImageView) view.findViewById(R.id.button_edit);
-        mRefreshImageView = (ImageView) view.findViewById(R.id.button_refresh);
+        /*mRefreshImageView = (ImageView) view.findViewById(R.id.button_refresh);
         mRefreshImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -71,7 +73,7 @@ public class UserInfoFragment extends Fragment {
                 if (getArguments() == null) showAuthorizedUser();
                 else showUserByLogin(getArguments().getString("ARGUMENT_LOGIN"));
             }
-        });
+        });*/
 
         mClient = ServiceGenerator.createService(GitHubClient.class);
         if (getArguments() == null) showAuthorizedUser();
@@ -81,6 +83,29 @@ public class UserInfoFragment extends Fragment {
         }
 
         return view;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        if (getArguments() == null) inflater.inflate(R.menu.menu_edit_fragment, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_edit:
+                if (mUser != null) {
+                    Intent editUserIntent = new Intent(getActivity(), EditUserActivity.class);
+                    editUserIntent.putExtra("EXTRA_NAME", mUser.getName());
+                    editUserIntent.putExtra("EXTRA_COMPANY", mUser.getCompany());
+                    editUserIntent.putExtra("EXTRA_EMAIL", mUser.getEmail());
+                    startActivity(editUserIntent);
+                }
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     private void showAuthorizedUser() {
@@ -98,13 +123,13 @@ public class UserInfoFragment extends Fragment {
                     mTotalReposTextView.setText(user.getTotalPrivateRepos() + "");
                     mOwnedReposTextView.setText(user.getOwnedPrivateRepos() + "");
 
-                    mEditImageView.setVisibility(View.VISIBLE);
-                    mRefreshImageView.setVisibility(View.GONE);
-                    mEditImageView.setOnClickListener(onEditClickListener);
+                    //mRefreshImageView.setVisibility(View.GONE);
 
                 } else {
-                    //Toast.makeText(getActivity(), "failed response", Toast.LENGTH_SHORT).show();
-                    mRefreshImageView.setVisibility(View.VISIBLE);
+                    //showAuthorizedUser();
+                    Toast.makeText(getActivity(),
+                            getString(R.string.msg_no_connection), Toast.LENGTH_SHORT).show();
+                    //mRefreshImageView.setVisibility(View.VISIBLE);
                 }
             }
 
@@ -112,12 +137,12 @@ public class UserInfoFragment extends Fragment {
             public void onFailure(Call<AuthorizedUser> call, Throwable t) {
                 Toast.makeText(getActivity(),
                         getString(R.string.msg_no_connection), Toast.LENGTH_SHORT).show();
-                mRefreshImageView.setVisibility(View.VISIBLE);
+                //mRefreshImageView.setVisibility(View.VISIBLE);
             }
         });
     }
 
-    private void showUserByLogin(String login) {
+    private void showUserByLogin(final String login) {
         mClient.getUser(login).enqueue(new Callback<User>() {
 
             @Override
@@ -125,9 +150,10 @@ public class UserInfoFragment extends Fragment {
                 if (response.isSuccessful()) {
                     mUser = response.body();
                     showUserInfo(mUser);
-                    mRefreshImageView.setVisibility(View.GONE);
+                    //mRefreshImageView.setVisibility(View.GONE);
                 } else {
-                    mRefreshImageView.setVisibility(View.VISIBLE);
+                    showUserByLogin(login);
+                    // mRefreshImageView.setVisibility(View.VISIBLE);
                     //Toast.makeText(getActivity(),
                             //getString(R.string.msg_failed_responce), Toast.LENGTH_SHORT).show();
                 }
@@ -137,7 +163,7 @@ public class UserInfoFragment extends Fragment {
             public void onFailure(Call<User> call, Throwable t) {
                 Toast.makeText(getActivity(),
                         getString(R.string.msg_no_connection), Toast.LENGTH_SHORT).show();
-                mRefreshImageView.setVisibility(View.VISIBLE);
+                //mRefreshImageView.setVisibility(View.VISIBLE);
             }
         });
     }
@@ -169,19 +195,6 @@ public class UserInfoFragment extends Fragment {
                 Intent reposListIntent = new Intent(getActivity(), ReposListActivity.class);
                 reposListIntent.putExtra("EXTRA_LOGIN", mUser.getLogin());
                 startActivity(reposListIntent);
-            }
-        }
-    };
-
-    private View.OnClickListener onEditClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            if (mUser != null) {
-                Intent editUserIntent = new Intent(getActivity(), EditUserActivity.class);
-                editUserIntent.putExtra("EXTRA_NAME", mUser.getName());
-                editUserIntent.putExtra("EXTRA_COMPANY", mUser.getCompany());
-                editUserIntent.putExtra("EXTRA_EMAIL", mUser.getEmail());
-                startActivity(editUserIntent);
             }
         }
     };

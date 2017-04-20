@@ -3,16 +3,18 @@ package com.artioml.githubclient;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.TextInputLayout;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+//import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,9 +30,10 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class UserListFragment extends Fragment {
+    
     private ArrayList<UserItem> mUsers;
     private RecyclerView mRecyclerView;
-    private TextInputLayout mTextInputLayout;
+    private SearchView mSearchView;
     private SwipeRefreshLayout mSwipeRefresh;
     private EndlessRecyclerViewScrollListener mScrollListener;
 
@@ -45,7 +48,7 @@ public class UserListFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_users_list, container, false);
 
-        mTextInputLayout = (TextInputLayout) view.findViewById(R.id.text_search_user);
+        mSearchView = (SearchView) view.findViewById(R.id.text_search_user);
         nClient = ServiceGenerator.createService(GitHubClient.class);
         mUsers = new ArrayList<>();
 
@@ -65,54 +68,32 @@ public class UserListFragment extends Fragment {
         mSwipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                mScrollListener.resetState();
                 loadUsersPage(mQuery, 1);
             }
         });
 
-        loadUsersPage(mQuery, 1);
+        mSearchView.setOnQueryTextListener(onQueryTextListener);
 
-        view.findViewById(R.id.button_search_user).setOnClickListener(onSearchUserClickListener);
+        loadUsersPage(mQuery, 1);
 
         return view;
     }
 
-    private View.OnClickListener onUserClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            Intent userInfoIntent = new Intent(getActivity(), UserInfoActivity.class);
-            String userLogin =
-                    ((TextView) view.findViewById(R.id.text_item_name)).getText().toString();
-            userInfoIntent.putExtra("EXTRA_LOGIN", userLogin);
-            startActivity(userInfoIntent);
-        }
-    };
+    private void loadUsersPage(final String login, final int page) {
 
-    private View.OnClickListener onSearchUserClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            ((InputMethodManager) getActivity().getSystemService(
-                    Context.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(
-                    getView().getWindowToken(), 0);
-
-            mScrollListener.resetState();
-            String currentQuery = mTextInputLayout.getEditText().getText().toString().trim();
-            if (!currentQuery.equals("")) {
-                mUsers.clear();
-                mQuery = currentQuery;
-                loadUsersPage(mQuery, 1);
-            }
-        }
-    };
-
-    private void loadUsersPage(String login, final int page) {
-        nClient.searchUsers(login, page).enqueue(new Callback<Users>() {
+       nClient.searchUsers(login, page).enqueue(new Callback<Users>() {
 
             @Override
             public void onResponse(Call<Users> call, Response<Users> response) {
+                Log.d(UserListFragment.class.getSimpleName(),
+                        "code: " + response.code());
                 if (response.isSuccessful()) {
                     if (page == 1) mUsers.clear();
                     mUsers.addAll(response.body().getItems());
                     mRecyclerView.getAdapter().notifyDataSetChanged();
+                    Log.d(UserListFragment.class.getSimpleName(), mUsers.size() + " (" + page +
+                            ") " + response.body().getTotalCount());
                 } else {
                     Log.d(UserListFragment.class.getSimpleName(),
                             getString(R.string.msg_failed_responce));
@@ -128,6 +109,40 @@ public class UserListFragment extends Fragment {
             }
         });
     }
+
+    private View.OnClickListener onUserClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            Intent userInfoIntent = new Intent(getActivity(), UserInfoActivity.class);
+            String userLogin =
+                    ((TextView) view.findViewById(R.id.text_item_name)).getText().toString();
+            userInfoIntent.putExtra("EXTRA_LOGIN", userLogin);
+            startActivity(userInfoIntent);
+        }
+    };
+
+    SearchView.OnQueryTextListener onQueryTextListener = new SearchView.OnQueryTextListener() {
+        @Override
+        public boolean onQueryTextSubmit(String s) {
+            ((InputMethodManager) getActivity().getSystemService(
+                    Context.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(
+                    getView().getWindowToken(), 0);
+
+            String currentQuery = mSearchView.getQuery().toString().trim();
+            if (!currentQuery.equals("")) {
+                mScrollListener.resetState();
+                mUsers.clear();
+                mQuery = currentQuery;
+                loadUsersPage(mQuery, 1);
+            }
+            return true;
+        }
+
+        @Override
+        public boolean onQueryTextChange(String s) {
+            return true;
+        }
+    };
 
 
 }

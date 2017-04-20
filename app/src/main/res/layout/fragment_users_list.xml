@@ -3,36 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent" android:layout_height="match_parent">
 
-    <android.support.design.widget.FloatingActionButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:srcCompat="@drawable/ic_search"
-        android:id="@+id/button_search_user"
-        android:layout_gravity="top|end"
-        android:layout_marginTop="@dimen/double_margin"
-        android:layout_marginBottom="@dimen/fab_margin"
-        android:layout_marginStart="@dimen/fab_margin"
-        android:layout_marginEnd="@dimen/fab_margin" />
-
-    <LinearLayout
+    <SearchView
         android:orientation="vertical" android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/half_margin">
-
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/text_search_user"
-            android:layout_margin="@dimen/fourth_margin">
-
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/prompt_login"
-                android:imeOptions="actionDone"
-                android:inputType="textPersonName"/>
-
-        </android.support.design.widget.TextInputLayout>
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/half_margin"
+        android:id="@+id/text_search_user">
 
         <android.support.v4.widget.SwipeRefreshLayout
             android:id="@+id/swipe_users_refresh"
@@ -46,5 +21,5 @@
                 android:layout_marginTop="@dimen/normal_margin" />
         </android.support.v4.widget.SwipeRefreshLayout>
 
-    </LinearLayout>
+    </SearchView>
 </FrameLayout>

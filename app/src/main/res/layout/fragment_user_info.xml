@@ -37,16 +37,6 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:srcCompat="@drawable/ic_edit"
-                android:id="@+id/button_edit"
-                android:layout_weight="1"
-                android:layout_marginStart="@dimen/half_margin"
-                android:layout_marginLeft="@dimen/half_margin"
-                android:visibility="gone" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 app:srcCompat="@drawable/ic_refresh"
                 android:id="@+id/button_refresh"
                 android:layout_weight="1"

@@ -8,17 +8,17 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 public abstract class EndlessRecyclerViewScrollListener extends RecyclerView.OnScrollListener {
     // The minimum amount of items to have below your current scroll position
     // before loading more.
-    private int mVisibleThreshold = 5;
+    private final int VISIBLE_THRESHOLD = 5;
+    // Sets the starting page index
+    private final int STARTING_PAGE_LISTENER = 1;
     // The current offset index of data you have loaded
     private int mCurrentPage = 1;
     // The total number of items in the dataset after the last load
     private int mPreviousTotalItemCount = 0;
     // True if we are still waiting for the last set of data to load.
     private boolean mLoading = true;
-    // Sets the starting page index
-    private int mStartingPageIndex = 1;
 
-    RecyclerView.LayoutManager mLayoutManager;
+    private RecyclerView.LayoutManager mLayoutManager;
 
     public EndlessRecyclerViewScrollListener(LinearLayoutManager layoutManager) {
         this.mLayoutManager = layoutManager;
@@ -69,7 +69,7 @@ public abstract class EndlessRecyclerViewScrollListener extends RecyclerView.OnS
         // the visibleThreshold and need to reload more data.
         // If we do need to reload some more data, we execute onLoadMore to fetch the data.
         // threshold should reflect how many total columns there are too
-        if (!mLoading && (lastVisibleItemPosition + mVisibleThreshold) > totalItemCount) {
+        if (!mLoading && (lastVisibleItemPosition + VISIBLE_THRESHOLD) > totalItemCount) {
             mCurrentPage++;
             onLoadMore(mCurrentPage, totalItemCount, view);
             mLoading = true;
@@ -78,7 +78,7 @@ public abstract class EndlessRecyclerViewScrollListener extends RecyclerView.OnS
 
     // Call whenever performing new searches
     public void resetState() {
-        this.mCurrentPage = this.mStartingPageIndex;
+        this.mCurrentPage = this.STARTING_PAGE_LISTENER;
         this.mPreviousTotalItemCount = 0;
         this.mLoading = true;
     }

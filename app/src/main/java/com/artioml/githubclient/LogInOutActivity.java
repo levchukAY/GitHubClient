@@ -112,7 +112,8 @@ public class LogInOutActivity extends AppCompatActivity {
                     LogInOutActivity.this.finish();
                 } else {
                     Toast.makeText(LogInOutActivity.this,
-                            getString(R.string.msg_failed_responce), Toast.LENGTH_SHORT).show();
+                            getString(R.string.msg_no_connection), Toast.LENGTH_SHORT).show();
+                    startLogin();
                 }
             }
 

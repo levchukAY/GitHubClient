@@ -43,9 +43,12 @@ public class ReposAdapter extends RecyclerView.Adapter<ReposAdapter.ViewHolder> 
     public void onBindViewHolder(ViewHolder holder, int position) {
         Repository repository = mRepos.get(position);
         holder.title.setText(repository.getName());
+        holder.language.setText(repository.getLanguage());
+        holder.description.setText(repository.getDescription());
+        if (repository.getLanguage() == null)
+            holder.language.setVisibility(View.GONE);
         if (repository.getDescription() == null)
             holder.description.setVisibility(View.GONE);
-        else holder.description.setText(repository.getDescription().toString());
     }
 
     @Override
@@ -56,11 +59,13 @@ public class ReposAdapter extends RecyclerView.Adapter<ReposAdapter.ViewHolder> 
     class ViewHolder extends RecyclerView.ViewHolder {
         TextView title;
         TextView description;
+        TextView language;
 
         public ViewHolder(View itemView) {
             super(itemView);
             title = (TextView) itemView.findViewById(R.id.text_title);
             description = (TextView) itemView.findViewById(R.id.text_description);
+            language = (TextView) itemView.findViewById(R.id.text_language);
         }
     }
 }
