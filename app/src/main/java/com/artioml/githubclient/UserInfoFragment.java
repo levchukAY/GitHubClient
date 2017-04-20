@@ -12,6 +12,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,6 +43,8 @@ public class UserInfoFragment extends Fragment {
     private TextView mPrivateGistsTextView;
     private TextView mTotalReposTextView;
     private TextView mOwnedReposTextView;
+    private ProgressBar mProgressBar;
+    private ScrollView mScrollView;
 
     private GitHubClient mClient;
     private User mUser;
@@ -63,6 +67,8 @@ public class UserInfoFragment extends Fragment {
         mPrivateGistsTextView = (TextView) view.findViewById(R.id.text_privte_gists);
         mTotalReposTextView = (TextView) view.findViewById(R.id.text_total_repos);
         mOwnedReposTextView = (TextView) view.findViewById(R.id.text_owned_repos);
+        mProgressBar = (ProgressBar) view.findViewById(R.id.progress_bar_user);
+        mScrollView = (ScrollView) view.findViewById((R.id.view_scroll));
 
         view.findViewById(R.id.button_repos).setOnClickListener(onReposClickListener);
         /*mRefreshImageView = (ImageView) view.findViewById(R.id.button_refresh);
@@ -169,6 +175,10 @@ public class UserInfoFragment extends Fragment {
 
     private void showUserInfo(User user) {
 
+        mProgressBar.setIndeterminate(true);
+        mProgressBar.setVisibility(View.GONE);
+        mScrollView.setVisibility(View.VISIBLE);
+
         mLoginTextView.setText(user.getLogin());
         mNameTextView.setText(user.getName());
         mCompanyTextView.setText(user.getCompany());
@@ -205,22 +215,4 @@ public class UserInfoFragment extends Fragment {
 помеченные операции
 update profile
 MVP
-*/
-
-/*-----FIXED-----
-изображения
-пагинация юзеров
-пагинация репозиториев
-start users in search
-pull to refresh
-баг в репозиториях + refresh
-переделать инфу (my own repos with token), go to repos
-go to edit
-log in
-log out
-code style
-package
-
-loading animation
-search
 */

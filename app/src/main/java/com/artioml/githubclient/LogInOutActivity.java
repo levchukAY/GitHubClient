@@ -1,12 +1,20 @@
 package com.artioml.githubclient;
 
+import android.app.Dialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
+import android.webkit.WebResourceError;
+import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
@@ -55,6 +63,11 @@ public class LogInOutActivity extends AppCompatActivity {
     }
 
     public void startLogin() {
+
+        /*ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (cm.getActiveNetworkInfo() == null)
+            new FireDialogFragment().show(LogInOutActivity.this.getSupportFragmentManager(), "gvh");*/
+
         mVebView.loadUrl(Uri.parse(
                 GIT_HUB_URL + OAUTH_URL
                         + "?&client_id=" + ApiConstants.CLIENT_ID
@@ -76,15 +89,15 @@ public class LogInOutActivity extends AppCompatActivity {
             }
         }
 
-        public void onPageFinished(WebView paramWebView, String paramString) {
+        public void onPageFinished(WebView view, String url) {
 
-            if (!TextUtils.isEmpty(paramString)
-                    && paramString.startsWith(ApiConstants.CLIENT_CALLBACK)) {
+            if (!TextUtils.isEmpty(url)
+                    && url.startsWith(ApiConstants.CLIENT_CALLBACK)) {
 
                 LogInOutActivity.this.mVebView.setVisibility(View.INVISIBLE);
                 findViewById(R.id.load_progress).setVisibility(View.VISIBLE);
 
-                Uri localUri = Uri.parse(paramString);
+                Uri localUri = Uri.parse(url);
                 String code = localUri.getQueryParameter("code");
 
                 Retrofit.Builder builder = new Retrofit.Builder()
@@ -124,11 +137,10 @@ public class LogInOutActivity extends AppCompatActivity {
             }
         };
 
-        /*public void onReceivedError(
-                WebView paramWebView, WebResourceRequest paramWebResourceRequest,
-                WebResourceError paramWebResourceError)  {
-            super.onReceivedError(paramWebView, paramWebResourceRequest, paramWebResourceError);
-            //dialog.dismiss();
+        /*public void onReceivedError(WebView view,
+                                    WebResourceRequest request, WebResourceError error) {
+            super.onReceivedError(view, request, error);
+            new FireDialogFragment().show(LogInOutActivity.this.getSupportFragmentManager(), "gvh");
         }
 
         public boolean shouldOverrideUrlLoading(WebView paramWebView,  WebResourceRequest request) {
@@ -137,6 +149,7 @@ public class LogInOutActivity extends AppCompatActivity {
             paramWebView.loadUrl(request.toString());
             return true;
         }*/
+
     }
 
 }

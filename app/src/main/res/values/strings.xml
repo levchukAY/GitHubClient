@@ -21,10 +21,14 @@
     <string name="action_edit">Edit</string>
     <string name="action_logout">Sign out</string>
 
-    <string name="prompt_login">Enter login</string>
+    <string name="button_ok">OK</string>
+    <string name="button_cancel">Cancel</string>
 
-    <string name="msg_no_connection">Check connection</string>
-    <string name="msg_failed_response">Failed response</string>
+    <string name="msg_no_connection">No connection.</string>
+    <string name="msg_no_connection_dialog">No connection. Try again?</string>
+    <string name="msg_failed_response">Failed response.</string>
     <string name="msg_try_later">Too many attempts. Please try later.</string>
+
+
 
 </resources>

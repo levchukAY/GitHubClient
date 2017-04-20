@@ -8,7 +8,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-//import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -99,7 +98,6 @@ public class UserListFragment extends Fragment {
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            //loadUsersPage(login, page);
                             mScrollListener.retry();
                         }
                     }, 25_000);
@@ -139,12 +137,12 @@ public class UserListFragment extends Fragment {
                     getView().getWindowToken(), 0);
 
             String currentQuery = mSearchView.getQuery().toString().trim();
+            mUsers.clear();
+            mScrollListener.resetState();
             if (!currentQuery.equals("")) {
-                mScrollListener.resetState();
-                mUsers.clear();
                 mQuery = currentQuery;
                 loadUsersPage(mQuery, 1);
-            }
+            } mRecyclerView.getAdapter().notifyDataSetChanged();
             return true;
         }
 
