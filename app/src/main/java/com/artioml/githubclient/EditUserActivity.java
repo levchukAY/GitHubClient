@@ -77,8 +77,12 @@ public class EditUserActivity extends AppCompatActivity {
                     mCompanyEdit.getEditText().setText(user.getCompany());
                     mEmailEdit.getEditText().setText(user.getEmail());
                     Toast.makeText(EditUserActivity.this, "Updated", Toast.LENGTH_SHORT).show();
-                } else Toast.makeText(EditUserActivity.this,
-                        "Cannot update", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(EditUserActivity.this,
+                            getString(R.string.msg_try_later), Toast.LENGTH_SHORT).show();
+                    /*Toast.makeText(EditUserActivity.this,
+                            "Cannot update", Toast.LENGTH_SHORT).show();*/
+                }
             }
 
             @Override

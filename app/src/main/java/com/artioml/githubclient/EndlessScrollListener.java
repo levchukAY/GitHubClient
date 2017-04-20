@@ -4,8 +4,9 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.Log;
 
-public abstract class EndlessRecyclerViewScrollListener extends RecyclerView.OnScrollListener {
+public abstract class EndlessScrollListener extends RecyclerView.OnScrollListener {
     // The minimum amount of items to have below your current scroll position
     // before loading more.
     private final int VISIBLE_THRESHOLD = 5;
@@ -20,20 +21,8 @@ public abstract class EndlessRecyclerViewScrollListener extends RecyclerView.OnS
 
     private RecyclerView.LayoutManager mLayoutManager;
 
-    public EndlessRecyclerViewScrollListener(LinearLayoutManager layoutManager) {
+    public EndlessScrollListener(LinearLayoutManager layoutManager) {
         this.mLayoutManager = layoutManager;
-    }
-
-    public int getLastVisibleItem(int[] lastVisibleItemPositions) {
-        int maxSize = 0;
-        for (int i = 0; i < lastVisibleItemPositions.length; i++) {
-            if (i == 0) {
-                maxSize = lastVisibleItemPositions[i];
-            } else if (lastVisibleItemPositions[i] > maxSize) {
-                maxSize = lastVisibleItemPositions[i];
-            }
-        }
-        return maxSize;
     }
 
     // This happens many times a second during a scroll, so be wary of the code you place here.
@@ -44,18 +33,8 @@ public abstract class EndlessRecyclerViewScrollListener extends RecyclerView.OnS
         int lastVisibleItemPosition = 0;
         int totalItemCount = mLayoutManager.getItemCount();
 
-        if (mLayoutManager instanceof StaggeredGridLayoutManager) {
-            int[] lastVisibleItemPositions =
-                    ((StaggeredGridLayoutManager) mLayoutManager).findLastVisibleItemPositions(null);
-            // get maximum element within the list
-            lastVisibleItemPosition = getLastVisibleItem(lastVisibleItemPositions);
-        } else if (mLayoutManager instanceof GridLayoutManager) {
-            lastVisibleItemPosition =
-                    ((GridLayoutManager) mLayoutManager).findLastVisibleItemPosition();
-        } else if (mLayoutManager instanceof LinearLayoutManager) {
-            lastVisibleItemPosition =
+        lastVisibleItemPosition =
                     ((LinearLayoutManager) mLayoutManager).findLastVisibleItemPosition();
-        }
 
         // If it’s still loading, we check to see if the dataset count has
         // changed, if so we conclude it has finished loading and update the current page
@@ -81,6 +60,12 @@ public abstract class EndlessRecyclerViewScrollListener extends RecyclerView.OnS
         this.mCurrentPage = this.STARTING_PAGE_LISTENER;
         this.mPreviousTotalItemCount = 0;
         this.mLoading = true;
+    }
+
+    public void retry() {
+        Log.d(UserListFragment.class.getSimpleName(), "on repeat");
+        this.mCurrentPage--;
+        this.mLoading = false;
     }
 
     public abstract void onLoadMore(int page, int totalItemsCount, RecyclerView view);

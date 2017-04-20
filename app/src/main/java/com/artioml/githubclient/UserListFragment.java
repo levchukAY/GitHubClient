@@ -30,14 +30,16 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class UserListFragment extends Fragment {
-    
+
+    private final static int ITEMS_PER_PAGE = 50;
+
     private ArrayList<UserItem> mUsers;
     private RecyclerView mRecyclerView;
     private SearchView mSearchView;
     private SwipeRefreshLayout mSwipeRefresh;
-    private EndlessRecyclerViewScrollListener mScrollListener;
+    private EndlessScrollListener mScrollListener;
 
-    private GitHubClient nClient;
+    private GitHubClient mClient;
     private String mQuery = "Google";
 
     @Override
@@ -49,14 +51,14 @@ public class UserListFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_users_list, container, false);
 
         mSearchView = (SearchView) view.findViewById(R.id.text_search_user);
-        nClient = ServiceGenerator.createService(GitHubClient.class);
+        mClient = ServiceGenerator.createService(GitHubClient.class);
         mUsers = new ArrayList<>();
 
         mRecyclerView = (RecyclerView) view.findViewById(R.id.view_users);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity().getBaseContext());
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setAdapter(new UserAdapter(getActivity(), mUsers, onUserClickListener));
-        mScrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
+        mScrollListener = new EndlessScrollListener(layoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
                 loadUsersPage(mQuery, page);
@@ -82,21 +84,29 @@ public class UserListFragment extends Fragment {
 
     private void loadUsersPage(final String login, final int page) {
 
-       nClient.searchUsers(login, page).enqueue(new Callback<Users>() {
+       mClient.searchUsers(login, page).enqueue(new Callback<Users>() {
 
             @Override
             public void onResponse(Call<Users> call, Response<Users> response) {
-                Log.d(UserListFragment.class.getSimpleName(),
-                        "code: " + response.code());
+                Log.d(UserListFragment.class.getSimpleName(), "code: " + response.code());
                 if (response.isSuccessful()) {
-                    if (page == 1) mUsers.clear();
+                    if (page == 1)  mUsers.clear();
                     mUsers.addAll(response.body().getItems());
                     mRecyclerView.getAdapter().notifyDataSetChanged();
-                    Log.d(UserListFragment.class.getSimpleName(), mUsers.size() + " (" + page +
-                            ") " + response.body().getTotalCount());
+                    Log.d(UserListFragment.class.getSimpleName(), mUsers.size()
+                            + " (" + page + ") " + response.body().getTotalCount());
                 } else {
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            //loadUsersPage(login, page);
+                            mScrollListener.retry();
+                        }
+                    }, 25_000);
                     Log.d(UserListFragment.class.getSimpleName(),
-                            getString(R.string.msg_failed_responce));
+                            getString(R.string.msg_failed_response));
+                    Toast.makeText(getActivity(),
+                            getString(R.string.msg_try_later), Toast.LENGTH_SHORT).show();
                 }
                 mSwipeRefresh.setRefreshing(false);
             }

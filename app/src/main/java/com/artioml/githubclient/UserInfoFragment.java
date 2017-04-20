@@ -126,9 +126,9 @@ public class UserInfoFragment extends Fragment {
                     //mRefreshImageView.setVisibility(View.GONE);
 
                 } else {
-                    //showAuthorizedUser();
-                    Toast.makeText(getActivity(),
-                            getString(R.string.msg_no_connection), Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(getActivity(), LogInOutActivity.class));
+                    /*Toast.makeText(getActivity(),
+                            getString(R.string.msg_try_later), Toast.LENGTH_SHORT).show();*/
                     //mRefreshImageView.setVisibility(View.VISIBLE);
                 }
             }
@@ -152,10 +152,9 @@ public class UserInfoFragment extends Fragment {
                     showUserInfo(mUser);
                     //mRefreshImageView.setVisibility(View.GONE);
                 } else {
-                    showUserByLogin(login);
+                    Toast.makeText(getActivity(),
+                            getString(R.string.msg_try_later), Toast.LENGTH_SHORT).show();
                     // mRefreshImageView.setVisibility(View.VISIBLE);
-                    //Toast.makeText(getActivity(),
-                            //getString(R.string.msg_failed_responce), Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -194,6 +193,7 @@ public class UserInfoFragment extends Fragment {
             if (mUser != null) {
                 Intent reposListIntent = new Intent(getActivity(), ReposListActivity.class);
                 reposListIntent.putExtra("EXTRA_LOGIN", mUser.getLogin());
+                reposListIntent.putExtra("EXTRA_REPOS_COUNT", mUser.getPublicRepos());
                 startActivity(reposListIntent);
             }
         }

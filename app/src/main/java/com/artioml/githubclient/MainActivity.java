@@ -27,11 +27,8 @@ public class MainActivity extends AppCompatActivity {
 
         String token = new Credentials(this).getToken();
         if (token == null) {
-            Intent loginIntent = new Intent(this, LogInOutActivity.class);
-            startActivity(loginIntent);
-            //finish();
+            startActivity(new Intent(this, LogInOutActivity.class));
         }
-
         /*GitHubClient mClient = ServiceGenerator.createService(GitHubClient.class);
         mClient.followUser("artiomlevchuk", new Credentials(this).getToken())
         .enqueue(new Callback<Void>() {
@@ -64,7 +61,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (new Credentials(this).getToken() == null) finish();
+        if (new Credentials(this).getToken() == null)
+            finish();
     }
 
     @Override
@@ -79,7 +77,6 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.action_log_out:
                 startActivity(new Intent(this, LogInOutActivity.class));
-                //finish();
             default:
                 return super.onOptionsItemSelected(item);
         }

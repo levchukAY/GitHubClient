@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="ru.mustakimov.retrofittutorial.view.MainActivity">
 
-    <item android:title="Item"
+    <item
+        android:title="@string/action_edit"
         android:icon="@drawable/ic_edit"
         app:showAsAction="always"
         android:id="@+id/action_edit" />

@@ -88,7 +88,7 @@ public class LogInOutActivity extends AppCompatActivity {
                 String code = localUri.getQueryParameter("code");
 
                 Retrofit.Builder builder = new Retrofit.Builder()
-                        .baseUrl("https://github.com/")
+                        .baseUrl(GIT_HUB_URL)
                         .addConverterFactory(GsonConverterFactory.create());
                 Retrofit retrofit = builder.build();
                 retrofit.create(GitHubClient.class).getAccessToken(
@@ -112,7 +112,7 @@ public class LogInOutActivity extends AppCompatActivity {
                     LogInOutActivity.this.finish();
                 } else {
                     Toast.makeText(LogInOutActivity.this,
-                            getString(R.string.msg_no_connection), Toast.LENGTH_SHORT).show();
+                            getString(R.string.msg_try_later), Toast.LENGTH_SHORT).show();
                     startLogin();
                 }
             }
