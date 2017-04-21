@@ -1,4 +1,4 @@
-package com.artioml.githubclient;
+﻿package com.artioml.githubclient;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -137,6 +137,7 @@ public class UserInfoFragment extends Fragment {
                     mTotalReposTextView.setText(user.getTotalPrivateRepos() + "");
                     mOwnedReposTextView.setText(user.getOwnedPrivateRepos() + "");
                 } else {
+                    new Credentials(UserInfoFragment.this.getActivity()).putToken(null);
                     startActivity(new Intent(getActivity(), LogInOutActivity.class));
                 }
             }
