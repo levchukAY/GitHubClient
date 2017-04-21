@@ -88,7 +88,7 @@ public class UserInfoFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        if (getArguments() == null && mUser != null) {
+        if (getArguments() == null) {
             inflater.inflate(R.menu.menu_edit_fragment, menu);
         }
     }
@@ -101,7 +101,11 @@ public class UserInfoFragment extends Fragment {
                     Intent editUserIntent = new Intent(getActivity(), EditUserActivity.class);
                     editUserIntent.putExtra("EXTRA_NAME", mUser.getName());
                     editUserIntent.putExtra("EXTRA_COMPANY", mUser.getCompany());
+                    editUserIntent.putExtra("EXTRA_BLOG", mUser.getBlog());
+                    editUserIntent.putExtra("EXTRA_LOCATION", mUser.getLocation());
+                    editUserIntent.putExtra("EXTRA_BIO", mUser.getBio());
                     editUserIntent.putExtra("EXTRA_EMAIL", mUser.getEmail());
+                    editUserIntent.putExtra("EXTRA_HIREABLE", mUser.getHireable());
                     startActivity(editUserIntent);
                 }
                 return true;

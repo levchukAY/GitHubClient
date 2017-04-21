@@ -10,7 +10,7 @@
         android:layout_gravity="center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        card_view:cardElevation="@dimen/fourth_margin"
+        card_view:cardElevation="2dp"
         android:layout_marginBottom="@dimen/fourth_margin"
         android:layout_marginTop="@dimen/fourth_margin"
         android:layout_marginLeft="@dimen/half_margin"

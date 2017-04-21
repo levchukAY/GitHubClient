@@ -73,7 +73,7 @@ public class User {
     private String email;
     @SerializedName("hireable")
     @Expose
-    private Object hireable;
+    private boolean hireable;
     @SerializedName("bio")
     @Expose
     private String bio;
@@ -272,11 +272,11 @@ public class User {
         this.email = email;
     }
 
-    public Object getHireable() {
+    public boolean getHireable() {
         return hireable;
     }
 
-    public void setHireable(Object hireable) {
+    public void setHireable(boolean hireable) {
         this.hireable = hireable;
     }
 

@@ -30,8 +30,6 @@ import retrofit2.Response;
 
 public class UserListFragment extends Fragment {
 
-    private final static int ITEMS_PER_PAGE = 50;
-
     private ArrayList<UserItem> mUsers;
     private RecyclerView mRecyclerView;
     private SearchView mSearchView;
@@ -111,8 +109,9 @@ public class UserListFragment extends Fragment {
 
             @Override
             public void onFailure(Call<Users> call, Throwable t) {
-                Toast.makeText(getActivity(),
-                        getString(R.string.msg_no_connection), Toast.LENGTH_SHORT).show();
+                if (UserListFragment.this.isAdded())
+                    Toast.makeText(getActivity(),
+                            getString(R.string.msg_no_connection), Toast.LENGTH_SHORT).show();
                 mSwipeRefresh.setRefreshing(false);
             }
         });
@@ -142,7 +141,8 @@ public class UserListFragment extends Fragment {
             if (!currentQuery.equals("")) {
                 mQuery = currentQuery;
                 loadUsersPage(mQuery, 1);
-            } mRecyclerView.getAdapter().notifyDataSetChanged();
+            }
+            mRecyclerView.getAdapter().notifyDataSetChanged();
             return true;
         }
 

@@ -12,6 +12,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.artioml.githubclient.api.Credentials;
 
@@ -30,6 +31,8 @@ public class MainActivity extends AppCompatActivity {
         if (token == null) {
             startActivity(new Intent(this, LogInOutActivity.class));
         }
+
+        //Toast.makeText(MainActivity.this, token, Toast.LENGTH_SHORT).show();
         /*GitHubClient mClient = ServiceGenerator.createService(GitHubClient.class);
         mClient.followUser("artiomlevchuk", new Credentials(this).getToken())
         .enqueue(new Callback<Void>() {
