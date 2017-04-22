@@ -87,7 +87,12 @@ public class UserListFragment extends Fragment {
             public void onResponse(Call<Users> call, Response<Users> response) {
                 Log.d(UserListFragment.class.getSimpleName(), "code: " + response.code());
                 if (response.isSuccessful()) {
-                    if (page == 1)  mUsers.clear();
+                    if (page == 1) {
+                        mUsers.clear();
+                        if (response.body().getTotalCount() == 0) {
+                            mSwipeRefresh.setVisibility(View.GONE);
+                        } else mSwipeRefresh.setVisibility(View.VISIBLE);
+                    }
                     mUsers.addAll(response.body().getItems());
                     mRecyclerView.getAdapter().notifyDataSetChanged();
                     Log.d(UserListFragment.class.getSimpleName(), mUsers.size()
@@ -103,6 +108,7 @@ public class UserListFragment extends Fragment {
                             getString(R.string.msg_failed_response));
                     Toast.makeText(getActivity(),
                             getString(R.string.msg_try_later), Toast.LENGTH_SHORT).show();
+                    mSwipeRefresh.setVisibility(View.GONE);
                 }
                 mSwipeRefresh.setRefreshing(false);
             }
@@ -113,6 +119,7 @@ public class UserListFragment extends Fragment {
                     Toast.makeText(getActivity(),
                             getString(R.string.msg_no_connection), Toast.LENGTH_SHORT).show();
                 mSwipeRefresh.setRefreshing(false);
+                mSwipeRefresh.setVisibility(View.GONE);
             }
         });
     }

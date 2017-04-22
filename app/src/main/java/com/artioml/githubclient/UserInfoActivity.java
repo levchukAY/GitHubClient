@@ -6,8 +6,6 @@ import android.support.v7.widget.Toolbar;
 
 public class UserInfoActivity extends AppCompatActivity {
 
-    private UserInfoFragment mUserInfoFragment;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -16,7 +14,7 @@ public class UserInfoActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        mUserInfoFragment = new UserInfoFragment();
+        UserInfoFragment mUserInfoFragment = new UserInfoFragment();
         Bundle bundle = new Bundle();
         bundle.putString("ARGUMENT_LOGIN", getIntent().getStringExtra("EXTRA_LOGIN"));
         mUserInfoFragment.setArguments(bundle);

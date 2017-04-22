@@ -9,17 +9,30 @@
         android:layout_marginTop="@dimen/half_margin"
         android:id="@+id/text_search_user">
 
-        <android.support.v4.widget.SwipeRefreshLayout
-            android:id="@+id/swipe_users_refresh"
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="match_parent">
 
-            <android.support.v7.widget.RecyclerView
+            <android.support.v4.widget.SwipeRefreshLayout
+                android:id="@+id/swipe_users_refresh"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/view_users"
-                android:layout_marginTop="@dimen/normal_margin" />
-        </android.support.v4.widget.SwipeRefreshLayout>
+                android:layout_height="match_parent" >
+
+                <android.support.v7.widget.RecyclerView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/view_users"
+                    android:layout_marginTop="@dimen/normal_margin" />
+            </android.support.v4.widget.SwipeRefreshLayout>
+
+            <TextView
+                android:text="@string/title_no_users"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textStyle="italic"
+                android:layout_margin="@dimen/normal_margin" />
+        </LinearLayout>
 
     </SearchView>
 </FrameLayout>

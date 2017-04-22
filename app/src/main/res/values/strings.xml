@@ -17,6 +17,12 @@
     <string name="title_total_private_repos">Total\nprivate repos</string>
     <string name="title_owned_private_repos">Owned\nprivate repos</string>
     <string name="title_private_gists">Private\ngists</string>
+    <string name="title_followers">Followers</string>
+    <string name="title_following">Following</string>
+    <string name="title_repositories">REPOSITORIES</string>
+    <string name="title_view_more">VIEW MORE REPOSITORIES</string>
+    <string name="title_no_repos">Repositories not found</string>
+    <string name="title_no_users">Users not found</string>
 
     <string name="action_edit">Edit</string>
     <string name="action_logout">Sign out</string>

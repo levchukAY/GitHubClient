@@ -17,16 +17,18 @@ public class ReposAdapter extends RecyclerView.Adapter<ReposAdapter.ViewHolder> 
 
     private List<Repository> mRepos;
     private Activity mActivity;
+    private int mType;
 
-    public ReposAdapter(List<Repository> repos, Activity activity) {
+    public ReposAdapter(Activity activity, List<Repository> repos, int type) {
         this.mRepos = repos;
         this.mActivity = activity;
+        this.mType = type;
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(
-                parent.getContext()).inflate(R.layout.item_repos, parent, false);
+        int layout = mType == 0 ? R.layout.item_repo : R.layout.item_repo_demo;
+        View view = LayoutInflater.from(parent.getContext()).inflate(layout, parent, false);
         final ViewHolder holder = new ViewHolder(view);
         view.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -43,12 +45,16 @@ public class ReposAdapter extends RecyclerView.Adapter<ReposAdapter.ViewHolder> 
     public void onBindViewHolder(ViewHolder holder, int position) {
         Repository repository = mRepos.get(position);
         holder.title.setText(repository.getName());
-        holder.language.setText(repository.getLanguage());
-        holder.description.setText(repository.getDescription());
-        if (repository.getLanguage() == null)
+        if (repository.getLanguage() == null && mType == 0) {
             holder.language.setVisibility(View.GONE);
-        if (repository.getDescription() == null)
+        } else if (mType == 0){
+            holder.language.setText(repository.getLanguage());
+        }
+        if (repository.getDescription() == null) {
             holder.description.setVisibility(View.GONE);
+        } else {
+            holder.description.setText(repository.getDescription());
+        }
     }
 
     @Override
@@ -65,7 +71,8 @@ public class ReposAdapter extends RecyclerView.Adapter<ReposAdapter.ViewHolder> 
             super(itemView);
             title = (TextView) itemView.findViewById(R.id.text_title);
             description = (TextView) itemView.findViewById(R.id.text_description);
-            language = (TextView) itemView.findViewById(R.id.text_language);
+            if (mType == 0)
+                language = (TextView) itemView.findViewById(R.id.text_language);
         }
     }
 }

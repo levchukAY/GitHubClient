@@ -47,7 +47,7 @@ public class ReposListActivity extends AppCompatActivity {
         mRecyclerView = (RecyclerView) findViewById(R.id.view_repos);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(layoutManager);
-        ReposAdapter adapter = new ReposAdapter(mRepositories, this);
+        ReposAdapter adapter = new ReposAdapter(this, mRepositories, 0);
         mRecyclerView.setAdapter(adapter);
 
         mScrollListener = new EndlessScrollListener(layoutManager) {
