@@ -12,20 +12,21 @@ import android.widget.TextView;
 import com.artioml.githubclient.entities.UserItem;
 import com.bumptech.glide.Glide;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
+class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
 
-    private List<UserItem> mUers;
+    private List<UserItem> mUsers;
     private View.OnClickListener mOnUserClickListener;
     private Activity mActivity;
     private int mIconHeight;
 
-    public UserAdapter(Activity activity, List<UserItem> repos,
-                       View.OnClickListener onUserClickListener) {
-        this.mUers = repos;
+    UserAdapter(Activity activity, View.OnClickListener onUserClickListener) {
         this.mOnUserClickListener = onUserClickListener;
         this.mActivity = activity;
+
+        this.mUsers = new ArrayList<>();
 
         DisplayMetrics metrics = new DisplayMetrics();
         mActivity.getWindowManager().getDefaultDisplay().getMetrics(metrics);
@@ -42,7 +43,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        UserItem user = mUers.get(position);
+        UserItem user = mUsers.get(position);
         holder.name.setText(user.getLogin());
         Glide.with(mActivity)
                 .load(user.getAvatarUrl())
@@ -52,14 +53,26 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
 
     @Override
     public int getItemCount() {
-        return mUers.size();
+        return mUsers.size();
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder {
+    void addAll(List<UserItem> data) {
+        int startIndex = mUsers.size();
+        mUsers.addAll(data);
+        notifyItemRangeInserted(startIndex, data.size());
+    }
+
+    void clear() {
+        mUsers.clear();
+        notifyDataSetChanged();
+        //notifyItemRemoved(0);
+    }
+
+    static class ViewHolder extends RecyclerView.ViewHolder {
         TextView name;
         ImageView avatar;
 
-        public ViewHolder(View itemView) {
+        ViewHolder(View itemView) {
             super(itemView);
             name = (TextView) itemView.findViewById(R.id.text_item_name);
             avatar = (ImageView) itemView.findViewById(R.id.image_item_avatar);

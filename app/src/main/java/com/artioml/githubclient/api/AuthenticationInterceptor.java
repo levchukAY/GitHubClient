@@ -10,7 +10,7 @@ public class AuthenticationInterceptor implements Interceptor {
 
     private String mAuthToken;
 
-    public AuthenticationInterceptor(String token) {
+    AuthenticationInterceptor(String token) {
         this.mAuthToken = token;
     }
 

@@ -9,28 +9,17 @@ public class Users {
 
     @SerializedName("total_count")
     @Expose
-    private Integer totalCount;
-    @SerializedName("incomplete_results")
-    @Expose
-    private Boolean incompleteResults;
+    private int totalCount;
     @SerializedName("items")
     @Expose
     private List<UserItem> items = null;
 
-    public Integer getTotalCount() {
+    public int getTotalCount() {
         return totalCount;
     }
 
-    public void setTotalCount(Integer totalCount) {
+    public void setTotalCount(int totalCount) {
         this.totalCount = totalCount;
-    }
-
-    public Boolean getIncompleteResults() {
-        return incompleteResults;
-    }
-
-    public void setIncompleteResults(Boolean incompleteResults) {
-        this.incompleteResults = incompleteResults;
     }
 
     public List<UserItem> getItems() {

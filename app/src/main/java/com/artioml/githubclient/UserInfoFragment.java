@@ -3,6 +3,7 @@ package com.artioml.githubclient;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
@@ -30,7 +31,6 @@ import com.artioml.githubclient.entities.User;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -39,9 +39,11 @@ import retrofit2.Response;
 
 public class UserInfoFragment extends Fragment {
 
+    private static int ICON_HEIGHT, CORNERS_RADIUS;
+
     private ImageView mAvatarImageView;
     private TextView mLoginTextView;
-    private TextView mLoctionTextView;
+    private TextView mLocationTextView;
     private TextView mNameTextView;
     private TextView mCompanyTextView;
     private TextView mEmailTextView;
@@ -81,7 +83,7 @@ public class UserInfoFragment extends Fragment {
         mPrivateGistsTextView = (TextView) view.findViewById(R.id.text_privte_gists);
         mTotalReposTextView = (TextView) view.findViewById(R.id.text_total_repos);
         mOwnedReposTextView = (TextView) view.findViewById(R.id.text_owned_repos);
-        mLoctionTextView = (TextView) view.findViewById(R.id.text_user_location);
+        mLocationTextView = (TextView) view.findViewById(R.id.text_user_location);
         mProgressBar = (ProgressBar) view.findViewById(R.id.progress_bar_user);
         mScrollView = (ScrollView) view.findViewById((R.id.view_scroll));
         mPrivatePanel = view.findViewById(R.id.panel_private);
@@ -101,6 +103,11 @@ public class UserInfoFragment extends Fragment {
         mClient = ServiceGenerator.createService(GitHubClient.class);
         mToken = new Credentials(getActivity()).getToken();
         showUser();
+
+        DisplayMetrics metrics = new DisplayMetrics();
+        getActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        ICON_HEIGHT = 100 * metrics.densityDpi / 160;
+        CORNERS_RADIUS = 16 * metrics.densityDpi / 160;
 
         return view;
     }
@@ -195,8 +202,15 @@ public class UserInfoFragment extends Fragment {
     }
 
     private void loadUserRepos(final String userLogin) {
-        mClient.reposForUser(userLogin, 1, mToken).enqueue(new Callback<List<Repository>>() {
-            @Override
+        if (getActivity() instanceof MainActivity)
+            mClient.getRepositoriesByLogin(userLogin, 1).enqueue(getCallback());
+        else
+            mClient.getOwnedRepositories(userLogin, 1, mToken).enqueue(getCallback());
+    }
+
+    @NonNull
+    private Callback<List<Repository>> getCallback() {
+        return new Callback<List<Repository>>() {
             public void onResponse(Call<List<Repository>> call, Response<List<Repository>> resp) {
                 if (resp.isSuccessful()) {
                     if (resp.body().size() == 0) {
@@ -204,9 +218,9 @@ public class UserInfoFragment extends Fragment {
                     } else {
                         getActivity().findViewById(R.id.text_no_repos).setVisibility(View.GONE);
                         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-                        mRecyclerView.setAdapter(new ReposAdapter(getActivity(),
-                                resp.body().subList(0, Math.min(resp.body().size(), 5)), 1));
-                        mRecyclerView.getAdapter().notifyDataSetChanged();
+                        RepositoriesAdapter adapter = new RepositoriesAdapter(getActivity(), 1);
+                        adapter.addAll(resp.body().subList(0, Math.min(resp.body().size(), 5)));
+                        mRecyclerView.setAdapter(adapter);
                     }
                 } else {
                     Toast.makeText(getActivity(),
@@ -221,7 +235,7 @@ public class UserInfoFragment extends Fragment {
                         getString(R.string.msg_no_connection), Toast.LENGTH_SHORT).show();
                 getActivity().findViewById(R.id.text_next).setVisibility(View.GONE);
             }
-        });
+        };
     }
 
     private void showUserInfo(User user) {
@@ -243,8 +257,8 @@ public class UserInfoFragment extends Fragment {
             mEmailTextView.setVisibility(View.VISIBLE);
         }
         if (user.getLocation() != null) {
-            mLoctionTextView.setText(user.getLocation());
-            mLoctionTextView.setVisibility(View.VISIBLE);
+            mLocationTextView.setText(user.getLocation());
+            mLocationTextView.setVisibility(View.VISIBLE);
         }
 
         mReposTextView.setText(user.getPublicRepos() + "");
@@ -252,30 +266,24 @@ public class UserInfoFragment extends Fragment {
         mFollowersTextView.setText(user.getFollowers() + "");
         mFollowingTextView.setText(user.getFollowing() + "");
 
-        DisplayMetrics metrics = new DisplayMetrics();
-        getActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
-        int iconHeight = 100 * metrics.densityDpi / 160;
-        final int cornerRadius = 16 * metrics.densityDpi / 160;
+        setImage(user.getAvatarUrl());
 
-        /*Glide.with(this)
-                .load(user.getAvatarUrl())
-                .override(iconHeight, iconHeight)
-                .into(mAvatarImageView);*/
+    }
 
+    private void setImage(String avatarUrl) {
         Glide.with(this)
-                .load(user.getAvatarUrl())
+                .load(avatarUrl)
                 .asBitmap()
-                .override(iconHeight, iconHeight)
+                .override(ICON_HEIGHT, ICON_HEIGHT)
                 .into(new BitmapImageViewTarget(mAvatarImageView) {
                     @Override
                     protected void setResource(Bitmap resource) {
                         RoundedBitmapDrawable circularBitmapDrawable =
                                 RoundedBitmapDrawableFactory.create(getResources(), resource);
-                        circularBitmapDrawable.setCornerRadius(cornerRadius);
+                        circularBitmapDrawable.setCornerRadius(CORNERS_RADIUS);
                         mAvatarImageView.setImageDrawable(circularBitmapDrawable);
                     }
                 });
-
     }
 
     private View.OnClickListener onReposClickListener = new View.OnClickListener() {
@@ -285,6 +293,7 @@ public class UserInfoFragment extends Fragment {
                 Intent reposListIntent = new Intent(getActivity(), ReposListActivity.class);
                 reposListIntent.putExtra("EXTRA_LOGIN", mUser.getLogin());
                 reposListIntent.putExtra("EXTRA_REPOS_COUNT", mUser.getPublicRepos());
+                reposListIntent.putExtra("EXTRA_IS_AUTHORIZED", mUser instanceof AuthorizedUser);
                 startActivity(reposListIntent);
             }
         }

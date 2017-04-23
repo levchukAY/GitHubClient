@@ -12,7 +12,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.artioml.githubclient.api.Credentials;
 
@@ -21,7 +20,6 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    private ViewPager mViewPager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,30 +30,13 @@ public class MainActivity extends AppCompatActivity {
             startActivity(new Intent(this, LogInOutActivity.class));
         }
 
-        //Toast.makeText(MainActivity.this, token, Toast.LENGTH_SHORT).show();
-        /*GitHubClient mClient = ServiceGenerator.createService(GitHubClient.class);
-        mClient.followUser("artiomlevchuk", new Credentials(this).getToken())
-        .enqueue(new Callback<Void>() {
-            @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
-                if (response.isSuccessful())
-                    Toast.makeText(MainActivity.this, "Successful", Toast.LENGTH_SHORT).show();
-                else Toast.makeText(MainActivity.this, "no Successful", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onFailure(Call<Void> call, Throwable t) {
-                Toast.makeText(MainActivity.this, "onFailed", Toast.LENGTH_SHORT).show();
-            }
-        });*/
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        mViewPager = (ViewPager) findViewById(R.id.view_pager);
+        ViewPager mViewPager = (ViewPager) findViewById(R.id.view_pager);
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new UserInfoFragment(), "PROFILE");
-        adapter.addFragment(new UserListFragment(), "SEARCH");
+        adapter.addFragment(new UserListFragment(), "USERS");
         mViewPager.setAdapter(adapter);
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
@@ -81,9 +62,9 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.action_log_out:
                 startActivity(new Intent(this, LogInOutActivity.class));
-            default:
-                return super.onOptionsItemSelected(item);
+                break;
         }
+        return super.onOptionsItemSelected(item);
     }
 
     class ViewPagerAdapter extends FragmentPagerAdapter {
@@ -91,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
         private final List<Fragment> mFragmentList = new ArrayList<>();
         private final List<String> mFragmentTitleList = new ArrayList<>();
 
-        public ViewPagerAdapter(FragmentManager manager) {
+        ViewPagerAdapter(FragmentManager manager) {
             super(manager);
         }
 
@@ -110,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
             return mFragmentTitleList.get(position);
         }
 
-        public void addFragment(Fragment fragment, String title) {
+        void addFragment(Fragment fragment, String title) {
             mFragmentList.add(fragment);
             mFragmentTitleList.add(title);
         }

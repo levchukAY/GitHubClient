@@ -8,7 +8,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,10 +18,7 @@ import android.widget.Toast;
 
 import com.artioml.githubclient.api.GitHubClient;
 import com.artioml.githubclient.api.ServiceGenerator;
-import com.artioml.githubclient.entities.UserItem;
 import com.artioml.githubclient.entities.Users;
-
-import java.util.ArrayList;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -30,8 +26,8 @@ import retrofit2.Response;
 
 public class UserListFragment extends Fragment {
 
-    private ArrayList<UserItem> mUsers;
     private RecyclerView mRecyclerView;
+    private UserAdapter userAdapter;
     private SearchView mSearchView;
     private SwipeRefreshLayout mSwipeRefresh;
     private EndlessScrollListener mScrollListener;
@@ -49,12 +45,12 @@ public class UserListFragment extends Fragment {
 
         mSearchView = (SearchView) view.findViewById(R.id.text_search_user);
         mClient = ServiceGenerator.createService(GitHubClient.class);
-        mUsers = new ArrayList<>();
 
         mRecyclerView = (RecyclerView) view.findViewById(R.id.view_users);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity().getBaseContext());
         mRecyclerView.setLayoutManager(layoutManager);
-        mRecyclerView.setAdapter(new UserAdapter(getActivity(), mUsers, onUserClickListener));
+        userAdapter = new UserAdapter(getActivity(), onUserClickListener);
+        mRecyclerView.setAdapter(userAdapter);
         mScrollListener = new EndlessScrollListener(layoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
@@ -85,18 +81,14 @@ public class UserListFragment extends Fragment {
 
             @Override
             public void onResponse(Call<Users> call, Response<Users> response) {
-                Log.d(UserListFragment.class.getSimpleName(), "code: " + response.code());
                 if (response.isSuccessful()) {
                     if (page == 1) {
-                        mUsers.clear();
+                        userAdapter.clear();
                         if (response.body().getTotalCount() == 0) {
                             mSwipeRefresh.setVisibility(View.GONE);
                         } else mSwipeRefresh.setVisibility(View.VISIBLE);
                     }
-                    mUsers.addAll(response.body().getItems());
-                    mRecyclerView.getAdapter().notifyDataSetChanged();
-                    Log.d(UserListFragment.class.getSimpleName(), mUsers.size()
-                            + " (" + page + ") " + response.body().getTotalCount());
+                    userAdapter.addAll(response.body().getItems());
                 } else {
                     new Handler().postDelayed(new Runnable() {
                         @Override
@@ -104,8 +96,6 @@ public class UserListFragment extends Fragment {
                             mScrollListener.retry();
                         }
                     }, 25_000);
-                    Log.d(UserListFragment.class.getSimpleName(),
-                            getString(R.string.msg_failed_response));
                     Toast.makeText(getActivity(),
                             getString(R.string.msg_try_later), Toast.LENGTH_SHORT).show();
                     mSwipeRefresh.setVisibility(View.GONE);
@@ -143,7 +133,7 @@ public class UserListFragment extends Fragment {
                     getView().getWindowToken(), 0);
 
             String currentQuery = mSearchView.getQuery().toString().trim();
-            mUsers.clear();
+            userAdapter.clear();
             mScrollListener.resetState();
             if (!currentQuery.equals("")) {
                 mQuery = currentQuery;

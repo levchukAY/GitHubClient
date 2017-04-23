@@ -49,7 +49,6 @@
                             android:layout_weight="1">
 
                             <TextView
-                                android:text="TextView"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:id="@+id/text_user_login"
@@ -60,46 +59,50 @@
                                 android:layout_marginRight="@dimen/fourth_margin" />
 
                             <TextView
-                                android:text="TextView"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:id="@+id/text_user_name"
                                 android:drawableLeft="@drawable/ic_person"
+                                android:drawableStart="@drawable/ic_person"
                                 android:drawablePadding="@dimen/half_margin"
                                 android:layout_marginBottom="2dp"
                                 android:layout_marginLeft="@dimen/half_margin"
+                                android:layout_marginStart="@dimen/half_margin"
                                 android:visibility="gone" />
 
                             <TextView
-                                android:text="TextView"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:id="@+id/text_user_email"
                                 android:drawableLeft="@drawable/ic_mail"
+                                android:drawableStart="@drawable/ic_mail"
                                 android:drawablePadding="@dimen/half_margin"
                                 android:layout_marginBottom="2dp"
                                 android:layout_marginLeft="@dimen/half_margin"
+                                android:layout_marginStart="@dimen/half_margin"
                                 android:visibility="gone" />
 
                             <TextView
-                                android:text="TextView"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:id="@+id/text_user_location"
                                 android:drawableLeft="@drawable/ic_place"
+                                android:drawableStart="@drawable/ic_place"
                                 android:drawablePadding="@dimen/half_margin"
                                 android:layout_marginBottom="2dp"
                                 android:layout_marginLeft="@dimen/half_margin"
+                                android:layout_marginStart="@dimen/half_margin"
                                 android:visibility="gone" />
 
                             <TextView
-                                android:text="TextView"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:id="@+id/text_user_company"
                                 android:drawableLeft="@drawable/ic_company"
+                                android:drawableStart="@drawable/ic_company"
                                 android:drawablePadding="@dimen/half_margin"
                                 android:layout_marginLeft="@dimen/half_margin"
+                                android:layout_marginStart="@dimen/half_margin"
                                 android:visibility="gone" />
 
                         </LinearLayout>
@@ -123,8 +126,7 @@
                             android:textColor="@android:color/black"
                             android:layout_gravity="fill_horizontal"
                             android:layout_columnSpan="1"
-                            android:layout_columnWeight="1"
-                            android:text="10" />
+                            android:layout_columnWeight="1" />
 
                         <TextView
                             android:layout_width="0dp"
@@ -137,8 +139,7 @@
                             android:textColor="@android:color/black"
                             android:layout_gravity="fill_horizontal"
                             android:layout_columnSpan="1"
-                            android:layout_columnWeight="1"
-                            android:text="10" />
+                            android:layout_columnWeight="1" />
 
                         <TextView
                             android:text="@string/title_public_repos"
@@ -162,8 +163,7 @@
                             android:textColor="@android:color/black"
                             android:layout_gravity="fill_horizontal"
                             android:layout_columnSpan="1"
-                            android:layout_columnWeight="1"
-                            android:text="10" />
+                            android:layout_columnWeight="1" />
 
                         <TextView
                             android:text="@string/title_followers"
@@ -187,8 +187,7 @@
                             android:textColor="@android:color/black"
                             android:layout_gravity="fill_horizontal"
                             android:layout_columnSpan="1"
-                            android:layout_columnWeight="1"
-                            android:text="10" />
+                            android:layout_columnWeight="1" />
 
                         <TextView
                             android:text="@string/title_following"
@@ -230,7 +229,8 @@
                             android:layout_columnWeight="1"
                             android:gravity="center"
                             android:text="@string/title_owned_private_repos"
-                            android:layout_gravity="fill_horizontal" />
+                            android:layout_gravity="fill_horizontal"
+                            android:layout_columnSpan="1" />
 
                         <TextView
                             android:layout_width="0dp"
@@ -243,7 +243,7 @@
                             android:textColor="@android:color/black"
                             android:gravity="center"
                             android:layout_gravity="fill_horizontal"
-                            android:text="10" />
+                            android:layout_columnSpan="1" />
 
                         <TextView
                             android:layout_width="0dp"
@@ -256,7 +256,7 @@
                             android:textColor="@android:color/black"
                             android:gravity="center"
                             android:layout_gravity="fill_horizontal"
-                            android:text="10" />
+                            android:layout_columnSpan="1" />
 
                         <TextView
                             android:layout_width="0dp"
@@ -269,7 +269,7 @@
                             android:textColor="@android:color/black"
                             android:gravity="center"
                             android:layout_gravity="fill_horizontal"
-                            android:text="10" />
+                            android:layout_columnSpan="1" />
 
                         <TextView
                             android:layout_width="0dp"
@@ -279,7 +279,8 @@
                             android:layout_column="0"
                             android:gravity="center"
                             android:text="@string/title_private_gists"
-                            android:layout_gravity="fill_horizontal" />
+                            android:layout_gravity="fill_horizontal"
+                            android:layout_columnSpan="1" />
 
                         <TextView
                             android:layout_width="0dp"
@@ -289,7 +290,8 @@
                             android:layout_column="1"
                             android:gravity="center"
                             android:text="@string/title_total_private_repos"
-                            android:layout_gravity="fill_horizontal" />
+                            android:layout_gravity="fill_horizontal"
+                            android:layout_columnSpan="1" />
                     </GridLayout>
 
                 </LinearLayout>
@@ -335,8 +337,9 @@
                         android:layout_height="match_parent"
                         android:textColor="@color/colorPrimaryDark"
                         android:background="?android:attr/selectableItemBackground"
-                        android:gravity="left|center"
+                        android:gravity="center_vertical|start"
                         android:drawableRight="@drawable/ic_chevron_right"
+                        android:drawableEnd="@drawable/ic_chevron_right"
                         android:layout_gravity="center"
                         android:drawablePadding="@dimen/half_margin"
                         android:id="@+id/text_next"

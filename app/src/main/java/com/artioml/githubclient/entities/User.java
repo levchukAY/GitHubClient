@@ -10,7 +10,7 @@ public class User {
     private String login;
     @SerializedName("id")
     @Expose
-    private Integer id;
+    private int id;
     @SerializedName("avatar_url")
     @Expose
     private String avatarUrl;
@@ -32,30 +32,12 @@ public class User {
     @SerializedName("gists_url")
     @Expose
     private String gistsUrl;
-    @SerializedName("starred_url")
-    @Expose
-    private String starredUrl;
-    @SerializedName("subscriptions_url")
-    @Expose
-    private String subscriptionsUrl;
-    @SerializedName("organizations_url")
-    @Expose
-    private String organizationsUrl;
     @SerializedName("repos_url")
     @Expose
     private String reposUrl;
-    @SerializedName("events_url")
-    @Expose
-    private String eventsUrl;
-    @SerializedName("received_events_url")
-    @Expose
-    private String receivedEventsUrl;
     @SerializedName("type")
     @Expose
     private Object type;
-    @SerializedName("site_admin")
-    @Expose
-    private Boolean siteAdmin;
     @SerializedName("name")
     @Expose
     private String name;
@@ -79,22 +61,16 @@ public class User {
     private String bio;
     @SerializedName("public_repos")
     @Expose
-    private Integer publicRepos;
+    private int publicRepos;
     @SerializedName("public_gists")
     @Expose
-    private Integer publicGists;
+    private int publicGists;
     @SerializedName("followers")
     @Expose
-    private Integer followers;
+    private int followers;
     @SerializedName("following")
     @Expose
-    private Integer following;
-    @SerializedName("created_at")
-    @Expose
-    private String createdAt;
-    @SerializedName("updated_at")
-    @Expose
-    private String updatedAt;
+    private int following;
 
     public String getLogin() {
         return login;
@@ -104,11 +80,11 @@ public class User {
         this.login = login;
     }
 
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -168,30 +144,6 @@ public class User {
         this.gistsUrl = gistsUrl;
     }
 
-    public String getStarredUrl() {
-        return starredUrl;
-    }
-
-    public void setStarredUrl(String starredUrl) {
-        this.starredUrl = starredUrl;
-    }
-
-    public String getSubscriptionsUrl() {
-        return subscriptionsUrl;
-    }
-
-    public void setSubscriptionsUrl(String subscriptionsUrl) {
-        this.subscriptionsUrl = subscriptionsUrl;
-    }
-
-    public String getOrganizationsUrl() {
-        return organizationsUrl;
-    }
-
-    public void setOrganizationsUrl(String organizationsUrl) {
-        this.organizationsUrl = organizationsUrl;
-    }
-
     public String getReposUrl() {
         return reposUrl;
     }
@@ -200,36 +152,12 @@ public class User {
         this.reposUrl = reposUrl;
     }
 
-    public String getEventsUrl() {
-        return eventsUrl;
-    }
-
-    public void setEventsUrl(String eventsUrl) {
-        this.eventsUrl = eventsUrl;
-    }
-
-    public String getReceivedEventsUrl() {
-        return receivedEventsUrl;
-    }
-
-    public void setReceivedEventsUrl(String receivedEventsUrl) {
-        this.receivedEventsUrl = receivedEventsUrl;
-    }
-
     public Object getType() {
         return type;
     }
 
     public void setType(String type) {
         this.type = type;
-    }
-
-    public Boolean getSiteAdmin() {
-        return siteAdmin;
-    }
-
-    public void setSiteAdmin(Boolean siteAdmin) {
-        this.siteAdmin = siteAdmin;
     }
 
     public String getName() {
@@ -288,52 +216,36 @@ public class User {
         this.bio = bio;
     }
 
-    public Integer getPublicRepos() {
+    public int getPublicRepos() {
         return publicRepos;
     }
 
-    public void setPublicRepos(Integer publicRepos) {
+    public void setPublicRepos(int publicRepos) {
         this.publicRepos = publicRepos;
     }
 
-    public Integer getPublicGists() {
+    public int getPublicGists() {
         return publicGists;
     }
 
-    public void setPublicGists(Integer publicGists) {
+    public void setPublicGists(int publicGists) {
         this.publicGists = publicGists;
     }
 
-    public Integer getFollowers() {
+    public int getFollowers() {
         return followers;
     }
 
-    public void setFollowers(Integer followers) {
+    public void setFollowers(int followers) {
         this.followers = followers;
     }
 
-    public Integer getFollowing() {
+    public int getFollowing() {
         return following;
     }
 
-    public void setFollowing(Integer following) {
+    public void setFollowing(int following) {
         this.following = following;
-    }
-
-    public String getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(String createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public String getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(String updatedAt) {
-        this.updatedAt = updatedAt;
     }
 
 }

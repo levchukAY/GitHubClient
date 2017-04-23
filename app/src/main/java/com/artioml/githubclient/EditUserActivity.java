@@ -14,10 +14,6 @@ import com.artioml.githubclient.api.Credentials;
 import com.artioml.githubclient.api.GitHubClient;
 import com.artioml.githubclient.api.ServiceGenerator;
 import com.artioml.githubclient.entities.AuthorizedUser;
-import com.artioml.githubclient.entities.UpdateData;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -67,7 +63,7 @@ public class EditUserActivity extends AppCompatActivity {
 
     private void updateUser() {
 
-        JSONObject infoRequestBody = new JSONObject();
+        /*JSONObject infoRequestBody = new JSONObject();
         try {
             infoRequestBody.put("name", mNameEdit.getEditText().getText().toString());
             infoRequestBody.put("email", mEmailEdit.getEditText().getText().toString());
@@ -87,7 +83,7 @@ public class EditUserActivity extends AppCompatActivity {
                 mCompanyEdit.getEditText().getText().toString(),
                 getIntent().getStringExtra("EXTRA_LOCATION"),
                 getIntent().getBooleanExtra("EXTRA_HIREABLE", false),
-                getIntent().getStringExtra("EXTRA_BIO"));
+                getIntent().getStringExtra("EXTRA_BIO"));*/
 
         Map<String, String> userPart = new HashMap<>();
         userPart.put("name", mNameEdit.getEditText().getText().toString());
@@ -97,7 +93,6 @@ public class EditUserActivity extends AppCompatActivity {
         userPart.put("location", getIntent().getStringExtra("EXTRA_LOCATION"));
         userPart.put("hireable", getIntent().getBooleanExtra("EXTRA_HIREABLE", true) + "");
         userPart.put("bio", getIntent().getStringExtra("EXTRA_BIO"));
-
 
         mClient.updateUser(mToken, userPart).enqueue(new Callback<AuthorizedUser>() {
 
@@ -109,14 +104,12 @@ public class EditUserActivity extends AppCompatActivity {
                     mCompanyEdit.getEditText().setText(user.getCompany());
                     mEmailEdit.getEditText().setText(user.getEmail());
                     Toast.makeText(EditUserActivity.this, "Updated", Toast.LENGTH_SHORT).show();
-                    Log.d("EDIT", response.toString());
+                    /*Log.d("EDIT", response.toString());
                     String jsonObject = response.toString();
-                    Log.d("EDIT", jsonObject);
+                    Log.d("EDIT", jsonObject);*/
                 } else {
                     Toast.makeText(EditUserActivity.this,
                             getString(R.string.msg_try_later), Toast.LENGTH_SHORT).show();
-                    /*Toast.makeText(EditUserActivity.this,
-                            "Cannot update", Toast.LENGTH_SHORT).show();*/
                 }
             }
 

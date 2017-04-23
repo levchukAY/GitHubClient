@@ -21,7 +21,7 @@ public abstract class EndlessScrollListener extends RecyclerView.OnScrollListene
 
     private RecyclerView.LayoutManager mLayoutManager;
 
-    public EndlessScrollListener(LinearLayoutManager layoutManager) {
+    EndlessScrollListener(LinearLayoutManager layoutManager) {
         this.mLayoutManager = layoutManager;
     }
 
@@ -56,13 +56,13 @@ public abstract class EndlessScrollListener extends RecyclerView.OnScrollListene
     }
 
     // Call whenever performing new searches
-    public void resetState() {
+    void resetState() {
         this.mCurrentPage = this.STARTING_PAGE_LISTENER;
         this.mPreviousTotalItemCount = 0;
         this.mLoading = true;
     }
 
-    public void retry() {
+    void retry() {
         Log.d(UserListFragment.class.getSimpleName(), "on repeat");
         this.mCurrentPage--;
         this.mLoading = false;

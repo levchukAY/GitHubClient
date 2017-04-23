@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
-
 public class Credentials {
 
     private static final String PREF_USER_TOKEN = "PREF_USER_TOKEN";
@@ -24,7 +23,6 @@ public class Credentials {
     public void putToken(String token) {
         mEditor.putString(PREF_USER_TOKEN, token);
         mEditor.apply();
-        ApiConstants.token = token;
     }
 
     public String getToken() {

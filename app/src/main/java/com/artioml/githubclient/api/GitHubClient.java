@@ -31,18 +31,14 @@ public interface GitHubClient {
     @GET("user")
     Call<AuthorizedUser> getAuthorizedUser(@Query("access_token") String accessToken);
 
-    //Authorization: token OAUTH-TOKEN
+    /*//Authorization: token OAUTH-TOKEN
     //@FormUrlEncoded
     @Headers({"Authorization: token 966e5e61b22c5e3556fd5cd01d29110e31f02555"})
     @GET("user")
-    Call<AuthorizedUser> getAuthorizedUser();
+    Call<AuthorizedUser> getAuthorizedUser();*/
 
-    //@Headers({"Authorization: token 966e5e61b22c5e3556fd5cd01d29110e31f02555"})
     @GET("users/{user}")
     Call<User> getUser(@Path("user") String user);
-
-    @GET("users")
-    Call<List<UserItem>> getUsers();
 
     @GET("search/users")
     Call<Users> searchUsers(
@@ -50,7 +46,12 @@ public interface GitHubClient {
             @Query("page") int page);
 
     @GET("users/{user}/repos")
-    Call<List<Repository>> reposForUser(
+    Call<List<Repository>> getRepositoriesByLogin(
+            @Path("user") String user,
+            @Query("page") int page);
+
+    @GET("users/{user}/repos")
+    Call<List<Repository>> getOwnedRepositories(
             @Path("user") String user,
             @Query("page") int page,
             @Query("access_token") String accessToken);
@@ -58,12 +59,12 @@ public interface GitHubClient {
     @PATCH("user")
     Call<AuthorizedUser> updateUser(
             @Query("access_token") String accessToken,
-            @Body UpdateData updateData);
+            @Body Map<String, String> updateData);
 
-    @PATCH("user")
+    /*@PATCH("user")
     Call<AuthorizedUser> updateUser(
             @Query("access_token") String accessToken,
-            @Body Map<String, String> updateData);
+            @Body UpdateData updateData);
 
     @PATCH("user")
     Call<AuthorizedUser> updateUser(
@@ -78,7 +79,7 @@ public interface GitHubClient {
     @PUT("user/following/{username}")
     Call<Void> followUser(
             @Path("username") String username,
-            @Query("access_token") String accessToken);
+            @Query("access_token") String accessToken);*/
 
     @FormUrlEncoded
     @Headers({"Accept: application/json"})

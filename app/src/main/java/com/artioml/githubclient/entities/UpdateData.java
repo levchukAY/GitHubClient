@@ -22,7 +22,7 @@ public class UpdateData {
     private String location;
     @SerializedName("hireable")
     @Expose
-    private Boolean hireable;
+    private boolean hireable;
     @SerializedName("bio")
     @Expose
     private String bio;
@@ -78,7 +78,7 @@ public class UpdateData {
         this.location = location;
     }
 
-    public Boolean getHireable() {
+    public boolean getHireable() {
         return hireable;
     }
 

@@ -7,13 +7,13 @@ public class Repository {
 
     @SerializedName("id")
     @Expose
-    private Integer id;
+    private int id;
     @SerializedName("name")
     @Expose
     private String name;
     @SerializedName("private")
     @Expose
-    private Boolean _private;
+    private boolean _private;
     @SerializedName("html_url")
     @Expose
     private String htmlUrl;
@@ -24,7 +24,7 @@ public class Repository {
     @Expose
     private String language;
 
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
@@ -40,11 +40,11 @@ public class Repository {
         this.name = name;
     }
 
-    public Boolean getPrivate() {
+    public boolean getPrivate() {
         return _private;
     }
 
-    public void setPrivate(Boolean _private) {
+    public void setPrivate(boolean _private) {
         this._private = _private;
     }
 

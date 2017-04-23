@@ -2,13 +2,12 @@ package com.artioml.githubclient;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.View;
 import android.widget.Toast;
 
 import com.artioml.githubclient.api.Credentials;
@@ -16,7 +15,6 @@ import com.artioml.githubclient.api.GitHubClient;
 import com.artioml.githubclient.api.ServiceGenerator;
 import com.artioml.githubclient.entities.Repository;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -27,12 +25,12 @@ public class ReposListActivity extends AppCompatActivity {
 
     private EndlessScrollListener mScrollListener;
     private SwipeRefreshLayout mSwipeRefresh;
-    private RecyclerView mRecyclerView;
+    private RepositoriesAdapter mAdapter;
 
     private GitHubClient mClient;
-    private List<Repository> mRepositories;
     private String mUserLogin, mToken;
-    private int mReposCount;
+    private int mRepositoriesCount;
+    private boolean isAuthorized;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,18 +40,16 @@ public class ReposListActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        mRepositories = new ArrayList<>();
-
-        mRecyclerView = (RecyclerView) findViewById(R.id.view_repos);
+        RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.view_repos);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(layoutManager);
-        ReposAdapter adapter = new ReposAdapter(this, mRepositories, 0);
-        mRecyclerView.setAdapter(adapter);
+        mAdapter = new RepositoriesAdapter(this, 0);
+        mRecyclerView.setAdapter(mAdapter);
 
         mScrollListener = new EndlessScrollListener(layoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
-                if (mRepositories.size() < mReposCount)
+                if (mAdapter.size() < mRepositoriesCount)
                     loadReposPage(mUserLogin, page);
             }
         };
@@ -69,20 +65,28 @@ public class ReposListActivity extends AppCompatActivity {
         });
 
         mUserLogin = getIntent().getStringExtra("EXTRA_LOGIN");
-        mReposCount = getIntent().getIntExtra("EXTRA_REPOS_COUNT", 0);
+        mRepositoriesCount = getIntent().getIntExtra("EXTRA_REPOS_COUNT", 0);
+        isAuthorized = getIntent().getBooleanExtra("EXTRA_IS_AUTHORIZED", false);
         mToken = new Credentials(this).getToken();
         mClient = ServiceGenerator.createService(GitHubClient.class);
         loadReposPage(mUserLogin, 1);
     }
 
     private void loadReposPage(final String userLogin, final int page) {
-        mClient.reposForUser(userLogin, page, mToken).enqueue(new Callback<List<Repository>>() {
+        if (isAuthorized)
+            mClient.getRepositoriesByLogin(userLogin, page).enqueue(getCallback(page));
+        else
+            mClient.getOwnedRepositories(userLogin, page, mToken).enqueue(getCallback(page));
+    }
+
+    @NonNull
+    private Callback<List<Repository>> getCallback(final int page) {
+        return new Callback<List<Repository>>() {
             @Override
             public void onResponse(Call<List<Repository>> call, Response<List<Repository>> resp) {
                 if (resp.isSuccessful()) {
-                    if (page == 1) mRepositories.clear();
-                    mRepositories.addAll(resp.body());
-                    mRecyclerView.getAdapter().notifyDataSetChanged();
+                    if (page == 1) mAdapter.clear();
+                    mAdapter.addAll(resp.body());
                 } else {
                     new Handler().postDelayed(new Runnable() {
                         @Override
@@ -102,7 +106,7 @@ public class ReposListActivity extends AppCompatActivity {
                         getString(R.string.msg_no_connection), Toast.LENGTH_SHORT).show();
                 mSwipeRefresh.setRefreshing(false);
             }
-        });
+        };
     }
 
 }
